@@ -3,6 +3,9 @@ const http = require("http");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const fs = require('fs');
+const path = require('path');
+
 
 dotenv.config();
 
@@ -11,11 +14,23 @@ const PORT = process.env.PORT || 5000;
 const API_KEY = process.env.WEATHER_API_KEY;
 const BASE_URL = process.env.WEATHER_API_BASE_URL;
 
-const allowedIPs = ["192.250.229.83",];
+const allowedIPs = ["192.250.229.83","::1"];
+
+
+const logFilePath = path.join(__dirname, 'app.log');
+const logStream = fs.createWriteStream(logFilePath, { flags: 'a' });
+
+
+const log = (message) => {
+  const timestamp = new Date().toISOString();
+  logStream.write(`[${timestamp}] ${message}\n`);
+};
+
 
 const checkIP = (req, res, next) => {
     const requestIP = req.ip || req.socket.remoteAddress;
-
+    log("Ip address is "+requestIP);
+    
     if (!allowedIPs.some(allowedIP => requestIP.includes(allowedIP))) {
         return res.status(403).json({ error: "Access denied" });
     }
@@ -25,7 +40,7 @@ const checkIP = (req, res, next) => {
 
 app.use(
     cors({
-        origin: "https://sdns-weather.gizew.com",
+        origin: ["https://sdns-weather.gizew.com","http://localhost:5173"],
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
         credentials: true,
     })
