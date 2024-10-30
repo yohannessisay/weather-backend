@@ -24,7 +24,7 @@ const checkIP = (req, res, next) => {
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: /^https:\/\/sdns-weather\.gizew\.com(\/.*)?$/,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   })
