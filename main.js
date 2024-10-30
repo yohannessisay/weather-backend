@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 5000;
 const API_KEY = process.env.WEATHER_API_KEY;
 const BASE_URL = process.env.WEATHER_API_BASE_URL;
 
-const allowedIPs = ["192.250.229.83","::1"];
+const allowedIPs = ["192.250.229.83","127.0.0.1"];
 
 
 const logFilePath = path.join(__dirname, 'app.log');
